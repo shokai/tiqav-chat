@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Node SocketIO Chat' })
+  res.render('index', { title: 'Tiqav Chat' })
 };

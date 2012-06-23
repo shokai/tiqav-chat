@@ -1,7 +1,7 @@
-Node-SocketIO-Chat
-==================
+Tiqav Chat
+==========
 
-- http://node-socketio-chat.herokuapp.com/
+- http://tiqav-chat.herokuapp.com/
 
 
 Install Dependencies
@@ -9,12 +9,13 @@ Install Dependencies
 
     % npm install -g express
     % npm install
+    % gem install heroku foreman
 
 
 Run
 ---
 
-    % node app.js
+    % foreman start
 
 => http://localhost:5000
 
