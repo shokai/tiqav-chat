@@ -13,6 +13,8 @@ io.configure(function(){
     io.set('polling duration', 10);
 });
 
+var chat_logs = new Array();
+
 
 // Configuration
 
@@ -38,7 +40,12 @@ app.configure('production', function(){
 app.get('/', routes.index);
 
 io.sockets.on('connection', function(socket){
+    socket.emit('connected', {
+        message : chat_logs
+    });
+
     socket.on('post', function(data){
+        chat_logs.push(data);
         io.sockets.emit('posted', {
             message : data
         }); // echo all clients

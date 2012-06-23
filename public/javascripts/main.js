@@ -11,4 +11,12 @@ $(function(){
         var li = $('<li>').text(data.message.user + ' : ' + data.message.body);
         $('#chat').prepend(li);
     });
+
+    socket.on('connected', function(data){
+        for(var i = 0; i < data.message.length; i++){
+            var c = data.message[i];
+            var li = $('<li>').text(c.user + ' : ' + c.body);
+            $('#chat').prepend(li);
+        }
+    });
 });
