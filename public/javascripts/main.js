@@ -14,13 +14,53 @@ var create_chat_html = function(msg){
     return chat;
 };
 
+var tiqav_search = function(word){
+    if(word === null || word === ''){
+        $('#tiqav').html('');
+        return;
+    }
+    $.getJSON("http://api.tiqav.com/search.json?q="+word+"&callback=?", function(data){
+        $('#tiqav').html('');
+        var max_images = data.length > 6 ? 6 : data.length;
+        for(var index = 0; index <  max_images; index++){
+            (function(){
+                var i = data[index];
+                var img_url = 'http://img.tiqav.com/'+i.id+'.'+i.ext;
+                var img = $('<img>').
+                    attr('src', 'http://img.tiqav.com/'+i.id+'.th.'+i.ext).
+                    click(function(e){
+                        $('#body').val(img_url).focus();
+                        tiqav_search(null);
+                    });
+                $('#tiqav').prepend($('<li>').html(img));
+            })();
+        }
+    });
+};
+
+var chat_post = function(e){
+    var msg = {body: $('#body').val(), user: $('#user').val()};
+    socket.emit('post', msg);
+};
+
 $(function(){
-    $('#btn_send').click(function(e){
-        var msg = {body: $('#body').val(), user: $('#user').val()};
-        socket.emit('post', msg);
+    var sid = null;
+    $('#body').keyup(function(e){
+        clearTimeout(sid);
+        sid = setTimeout(function(){
+            tiqav_search($('#body').val());
+        }, 200);
     });
 
+    $('#body').keydown(function(e){
+        if(e.keyCode === 13){
+            chat_post();
+        }
+    });
+    $('#btn_send').click(chat_post);
+
     socket.on('posted', function(data){
+        $('#body').val('');
         var li = $('<li>').html(create_chat_html(data.message));
         $('#chat').prepend(li);
     });
