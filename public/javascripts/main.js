@@ -57,6 +57,7 @@ var Tiqav = new function(){
 var chat_post = function(e){
     var msg = {body: $('#body').val(), user: $('#user').val()};
     socket.emit('post', msg);
+    $('#body').val('');
 };
 
 $(function(){
@@ -76,7 +77,6 @@ $(function(){
     $('#btn_send').click(chat_post);
 
     socket.on('posted', function(data){
-        $('#body').val('');
         var li = $('<li>').html(create_chat_html(data.message));
         $('#chat').prepend(li);
     });
