@@ -3,7 +3,6 @@ var socket = io.connect();
 
 var create_chat_html = function(msg){
     var chat = $('<div>');
-
     if(msg.user.match(/^[a-zA-Z0-9_]+$/)){
         chat.append( $('<span>').addClass('icon').html(
             $('<img>').attr('src', 'http://twiticon.herokuapp.com/'+msg.user)
@@ -11,7 +10,7 @@ var create_chat_html = function(msg){
     }
     chat.append( $('<span>').addClass('user').text(msg.user) );
     chat.append(' : ');
-    chat.append( $('<span>').addClass('body').text(msg.body) );
+    chat.append( $('<span>').addClass('body').html(msg.body.markup()) );
     return chat;
 };
 
