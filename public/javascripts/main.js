@@ -1,5 +1,5 @@
 
-var socket = io.connect('http://localhost:3000');
+var socket = io.connect();
 
 $(function(){
     $('#btn_send').click(function(e){
