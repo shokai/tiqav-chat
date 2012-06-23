@@ -25,9 +25,9 @@ var tiqav_search = function(word){
         for(var index = 0; index <  max_images; index++){
             (function(){
                 var i = data[index];
-                var img_url = 'http://img.tiqav.com/'+i.id+'.'+i.ext;
+                var img_url = 'http://img.tiqav.com/'+i.id+'.th.'+i.ext;
                 var img = $('<img>').
-                    attr('src', 'http://img.tiqav.com/'+i.id+'.th.'+i.ext).
+                    attr('src', img_url).
                     click(function(e){
                         $('#body').val(img_url).focus();
                         tiqav_search(null);
