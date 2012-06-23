@@ -14,12 +14,28 @@ var create_chat_html = function(msg){
     return chat;
 };
 
-var tiqav_search = function(word){
-    if(word === null || word === ''){
-        $('#tiqav').html('');
-        return;
-    }
-    $.getJSON("http://api.tiqav.com/search.json?q="+word+"&callback=?", function(data){
+var Tiqav = new function(){
+    var self = this;
+
+    this.cache = {};
+
+    this.search = function(word){
+        if(word === null || word === ''){
+            $('#tiqav').html('');
+            return;
+        }
+        if(self.cache[word] === undefined){
+            $.getJSON("http://api.tiqav.com/search.json?q="+word+"&callback=?", function(res){
+                self.cache[word] = res;
+                self.on_search(res);
+            });
+        }
+        else{
+            self.on_search(self.cache[word]);
+        }
+    };
+
+    this.on_search = function(data){
         $('#tiqav').html('');
         var max_images = data.length > 6 ? 6 : data.length;
         for(var index = 0; index <  max_images; index++){
@@ -30,13 +46,13 @@ var tiqav_search = function(word){
                     attr('src', img_url).
                     click(function(e){
                         $('#body').val(img_url).focus();
-                        tiqav_search(null);
+                        self.search(null);
                     });
                 $('#tiqav').prepend($('<li>').html(img));
             })();
         }
-    });
-};
+    };
+}();
 
 var chat_post = function(e){
     var msg = {body: $('#body').val(), user: $('#user').val()};
@@ -48,8 +64,8 @@ $(function(){
     $('#body').keyup(function(e){
         clearTimeout(sid);
         sid = setTimeout(function(){
-            tiqav_search($('#body').val());
-        }, 200);
+            Tiqav.search($('#body').val());
+        }, 300);
     });
 
     $('#body').keydown(function(e){
