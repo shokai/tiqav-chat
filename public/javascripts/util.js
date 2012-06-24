@@ -15,3 +15,25 @@ String.prototype.escape_html = function(){
     txt.data = this;
     return span.innerHTML;
 };
+
+var Notifer = new function(){
+    var self = this;
+
+    this.request = function(){
+        if(window.webkitNotifications.checkPermission() == 1){
+            window.webkitNotifications.requestPermission();
+        }
+    };
+
+    this.notify = function(icon, title, body){
+        if(window.webkitNotifications.checkPermission() == 0){
+            var notif = window.webkitNotifications.createNotification(icon, title, body);
+            notif.ondisplay = function(){
+                setTimeout(function(){
+                    if(notif.cancel) notif.cancel();
+                }, 3000);
+            };
+            notif.show();
+        }
+    };
+}();
