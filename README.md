@@ -2,8 +2,8 @@ Tiqav Chat
 ==========
 画像レスチャットNo.1
 
-- http://tiqav-chat.herokuapp.com/
-
+- http://tiqav-chat.herokuapp.com
+- https://github.com/shokai/tiqav-chat
 
 Install Dependencies
 --------------------
