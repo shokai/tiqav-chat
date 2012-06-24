@@ -13,7 +13,25 @@ io.configure(function(){
     io.set('polling duration', 10);
 });
 
-var chat_logs = new Array();
+var chat_logs = new (function(){
+    this.logs = new Array();
+    var self = this;
+
+    this.all = function(){
+        return self.logs;
+    };
+
+    this.push = function(data){
+        self.logs.push(data);
+        while(self.logs.length > self.max_log_size) self.logs.shift();
+    };
+
+    this.max_log_size = 100;
+    this.max = function(size){
+        self.max_log_size = size;
+        return self;
+    };
+})();
 
 
 // Configuration
@@ -25,6 +43,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
+  chat_logs.max(100);
 });
 
 app.configure('development', function(){
@@ -41,7 +60,7 @@ app.get('/', routes.index);
 
 io.sockets.on('connection', function(socket){
     socket.emit('connected', {
-        message : chat_logs
+        message : chat_logs.all()
     });
 
     socket.on('post', function(data){
