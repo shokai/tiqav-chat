@@ -68,7 +68,9 @@ $(function(){
       Tiqav.search($('#body').val());
     }, 300);
   });
-
+  $('#body').bind('webkitspeechchange', function(e){
+    Tiqav.search($('#body').val());
+  });
   $('#body').keydown(function(e){
     if(e.keyCode === 13){
       chat_post();
