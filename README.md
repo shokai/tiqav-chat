@@ -29,6 +29,19 @@ Deploy
     % heroku open
 
 
+Set Password
+------------
+local
+
+    % export BASIC_AUTH_USER=username
+    % export BASIC_AUTH_PASS=password
+
+on heroku
+
+    % heroku config:set BASIC_AUTH_USER=username
+    % heroku config:set BASIC_AUTH_PASS=password
+
+
 LICENSE
 =======
 (The MIT License)

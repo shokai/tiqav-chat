@@ -37,6 +37,9 @@ var chat_logs = new (function(){
 // Configuration
 
 app.configure(function(){
+  if(process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASS){
+    app.use(express.basicAuth(process.env.BASIC_AUTH_USER, process.env.BASIC_AUTH_PASS));
+  }
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
