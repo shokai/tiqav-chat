@@ -8,10 +8,13 @@ var express = require('express')
 
 var app = module.exports = express.createServer();
 var io = require('socket.io').listen(app);
-io.configure(function(){
+if(process.env.XHR){
+  console.log("use xhr-polling");
+  io.configure(function(){
     io.set('transports', ['xhr-polling']);
     io.set('polling duration', 10);
-});
+  });
+}
 
 var chat_logs = new (function(){
     this.logs = new Array();
